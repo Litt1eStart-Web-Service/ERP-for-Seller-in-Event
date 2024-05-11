@@ -5,7 +5,7 @@ services:
     build: ./backend
     container_name: erp-backend
     ports:
-      - "3000:3000"
+      - "1500:1500"
     restart: always
     networks:
       - erp-seller-booth-network
