@@ -22,7 +22,32 @@ const schema = new mongoose.Schema({
         type: Number,
         default: 0,
         min: 0
+    },
+    estValue: {
+        type: Number,
+        default: function () {
+            return this.price * this.amount
+        }
+    },
+    totalMargin: {
+        type: Number,
+        default: function () {
+            return this.margin * this.amount
+        }
+    },
+    estProfit: {
+        type: Number,
+        default: function () {
+            return this.estValue - this.totalMargin
+        }
     }
+})
+
+schema.pre('save', function(next){
+    this.estValue = this.price * this.amount
+    this.totalMargin = this.margin * this.amount;
+    this.estProfit = this.estValue - this.totalMargin;
+    next();
 })
 
 const Product = mongoose.model('Product', schema)
