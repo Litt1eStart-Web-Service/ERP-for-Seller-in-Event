@@ -1,5 +1,9 @@
 const getAll = async(req, res) => {
-    res.send('Get All Data')
+    const user = req.user
+    if(!user)
+        return res.status(401).json({error: 'Unauthorized'})
+
+    res.status(200).json(user)
 }
 
 const getFilterdData = async(req, res) => {

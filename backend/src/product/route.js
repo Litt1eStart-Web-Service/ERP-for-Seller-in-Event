@@ -9,9 +9,11 @@ const {
   editInfo
 } = require("./controller");
 
+const verifyToken = require('../middleware/verifyToken')
+
 const router = express.Router();
 
-router.get("/getAll", getAll);
+router.get("/getAll", verifyToken, getAll);
 router.get("/filterdData", getFilterdData);
 router.get("/:id", getById);
 router.post("/create", create);
