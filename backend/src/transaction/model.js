@@ -15,6 +15,10 @@ const schema = new mongoose.Schema({
     min: 0,
     default: 0,
   },
+  total_profit: {
+    type: Number,
+    default: 0
+  },
   location: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Location",
@@ -36,19 +40,14 @@ const schema = new mongoose.Schema({
   },
 });
 
-schema.virtual("total_profit").get(function () {
-  if(!this.populate("location")){
-    throw new Error('Location is not populated. Cant calculate total_profit');
+
+schema.pre("save", async function(next){
+  if(!this.isNew){
+    next()
   }
-  
-  return (
-    this.total_sales -
-    (this.total_margin +
-      this.location.price +
-      this.employee_wage +
-      this.other_expenses)
-  );
-});
+  this.total_profit = this.total_sales - this.total_margin
+  next() 
+})
 
 const Transaction = mongoose.model("Transaction", schema);
 
