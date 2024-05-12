@@ -1,4 +1,5 @@
 const Transaction = require("./model");
+const Order = require('../order/model')
 
 const getAll = async (req, res, next) => {
   const user = req.user;
@@ -57,24 +58,21 @@ const getById = async (req, res, next) => {
 const create = async (req, res, next) => {
   const user = req.user;
   const {
-    total_margin,
+    orders,
     total_sales,
     location,
     employee_wage,
     other_expenses,
     date,
   } = req.body;
-  if (
-    !total_margin ||
-    !total_sales ||
-    !location ||
-    !employee_wage ||
-    !other_expenses ||
-    !date
-  ) {
-    return res.status(404).json({ error: "Credential not complete" });
-  }
   try {
+
+    let total_margin = 0;
+    orders.map((order)=>{
+      const orderValue = order.amount * order.product_id.margin
+      total_margin += orderValue
+    })
+
     const transaction = await Transaction.create({
       user_id: user.id,
       total_margin,
