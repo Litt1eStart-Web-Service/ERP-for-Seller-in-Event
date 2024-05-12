@@ -20,6 +20,11 @@ app.use('/api/v1/transaction', transactionRoute)
 app.use('/api/v1/location', locationRoute)
 app.use('/api/v1/order', orderRoute)
 
+app.use((err, req, res, next) => {
+    console.error(process.env.NODE_ENV==="development"?err.stack:" ")
+    res.status(500).json({error: err.message})
+})
+
 connectDb()
 
 app.listen(process.env.PORT, ()=>{

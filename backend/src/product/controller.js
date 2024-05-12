@@ -1,6 +1,8 @@
+//Refactoring Code for Error
+
 const Product = require("./model");
 
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
   const user = req.user;
   if (!user) return res.status(401).json({ error: "Unauthorized" });
   try {
@@ -8,13 +10,11 @@ const getAll = async (req, res) => {
     if(!products) throw new Error('There is no product in this account')
     res.status(200).json(products)
   } catch (error) {
-    res.status(500).json({error: error.message})
+    next(error)
   }
 };
 
-const getFilterdData = async (req, res) => {};
-
-const getById = async (req, res) => {
+const getById = async (req, res, next) => {
     const user = req.user;
     const {id} = req.params
     if(!user) return res.status(401).json({error: 'Unauthorized'})
@@ -24,11 +24,11 @@ const getById = async (req, res) => {
         if(!product) throw new Error('This product is not Existed')
         res.status(200).json(product)
     } catch (error) {
-        res.status(500).json({error: error.message})
+        next(error)
     }
 };
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   const user = req.user;
   const { name, margin, price, amount } = req.body;
   if (!user) return res.status(401).json({ error: "Unauthorized" });
@@ -44,11 +44,11 @@ const create = async (req, res) => {
     if (!product) throw new Error("Failed to Create new Product");
     res.status(200).json(product)
   } catch (error) {
-    res.status(500).json({error: error.message})
+    next(error)
   }
 };
 
-const deleteById = async (req, res) => {
+const deleteById = async (req, res, next) => {
     const user = req.user;
     const {id} = req.params
     if(!user) return res.status(401).json({error: 'Unauthorized'})
@@ -58,11 +58,11 @@ const deleteById = async (req, res) => {
         if(!product) throw new Error('This product is not Existed')
         res.status(200).json(product)
     } catch (error) {
-        res.status(500).json({error: error.message})
+        next(error)
     }
 };
 
-const editAmount = async (req, res) => {
+const editAmount = async (req, res, next) => {
     const user = req.user;
     const {id} = req.params
     const { operation, newAmount } = req.body
@@ -84,15 +84,20 @@ const editAmount = async (req, res) => {
         await product.save()
         res.status(200).json(product)
     } catch (error) {
-        res.status(500).json({error: error.message})
+        next(error)
     }
 };
 
-const editInfo = async (req, res) => {
+const editInfo = async (req, res, next) => {
     const user = req.user;
     const {id} = req.params
     const { name, margin, price, amount } = req.body
-    if(!user) return res.status(401).json({error: 'Unauthorized'})
+    
+    if(!id)
+      return res.status(404).json({error: 'Id not Found'})
+
+    if(!name || !margin || !price || !amount)
+      return res.status(404).json({error: 'Credential not found'})
 
     try {
         const product = await Product.findById(id)
@@ -104,9 +109,32 @@ const editInfo = async (req, res) => {
         await product.save()
         res.status(200).json(product)
     } catch (error) {
-        res.status(500).json({error: error.message})
+        next(error)
     }
 };
+
+//Filterd Data
+const getFilterdData = async (req, res, next) => {
+  const user = req.user
+  const { dataType } = req.params
+  if(!dataType)
+    return res.status(404).json({error: 'Resource Not Found'})
+  try {
+    const products = await filterdDataByFieldName(dataType, user)
+    if(!products || products.length === 0) throw new Error('Product Resource not found')
+    res.status(200).json(products)
+  } catch (error) {
+    next(error)
+  }
+};
+
+const filterdDataByFieldName = async(fieldName, user) => {
+  let sortOptions = {}
+  sortOptions[fieldName] = 1
+  const products = await Product.find({ user_id: user.id }, fieldName).sort(sortOptions)
+  return products
+}
+//Filterd Data
 
 module.exports = {
   getAll,
