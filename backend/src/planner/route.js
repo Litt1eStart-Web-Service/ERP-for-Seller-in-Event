@@ -7,12 +7,15 @@ const {
   deleteById,
 } = require("./controller");
 
+const verifyToken = require('../middleware/verifyToken')
+const userValidation = require('../middleware/userValidation')
+
 const router = express.Router();
 
-router.get("/getAll", getAll);
-router.get("/:id", getById);
-router.post("create", create);
-router.put("/edit/status", editStatus);
-router.delete("/:id", deleteById);
+router.get("/getAll", verifyToken, userValidation, getAll);
+router.get("/:id", verifyToken, userValidation, getById);
+router.post("create", verifyToken, userValidation, create);
+router.put("/edit/status", verifyToken, userValidation, editStatus);
+router.delete("/:id", verifyToken, userValidation, deleteById);
 
 module.exports = router;
