@@ -2,9 +2,11 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 const SignUpPage = () => {
   const navigate = useNavigate()
   const API_URL = import.meta.env.VITE_API_URL
+  const { setAuthUser} = useAuthContext()
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -14,7 +16,7 @@ const SignUpPage = () => {
     try {
       if(username==="" || password==="" || confirmPassword==="") throw new Error('Please Complete All Field')
       
-      const body = {usernamem, password, confirmPassword}
+      const body = {username, password, confirmPassword}
       const res = await fetch(`${API_URL}/api/v1/user/signup`, {
         method: "POST",
         headers: {
@@ -23,6 +25,9 @@ const SignUpPage = () => {
         body: JSON.stringify(body)
       })
       if(!res.ok) throw new Error(res.error)
+      const data = await res.json()
+      sessionStorage.setItem("token", data)
+      setAuthUser(data)
       toast.success('Succesfully')
       navigate('/')
     } catch (error) {
