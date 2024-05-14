@@ -10,6 +10,8 @@ import InventoryPage from "./pages/InventoryPage";
 import WorkspacePage from "./pages/WorkspacePage";
 import PlannerPage from "./pages/PlannerPage";
 import TransactionPage from "./pages/TransactionPage";
+import LocationPage from './pages/LocationPage';
+
 function App() {
   const { authUser } = useAuthContext()
   return (
@@ -22,6 +24,7 @@ function App() {
         <Route path="/workspace" element={authUser ? <WorkspacePage /> : <LogInPage/>} />
         <Route path="/planner" element={authUser ? <PlannerPage /> : <LogInPage/>} />
         <Route path="/transaction" element={authUser ? <TransactionPage /> : <LogInPage/>} />
+        <Route path="/location" element={authUser ? <LocationPage /> : <LogInPage/>} />
       </Routes>
       <Toaster 
         toastOptions={{
