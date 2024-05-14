@@ -73,6 +73,7 @@ const create = async (req, res, next) => {
       total_margin += orderValue
     })
 
+    total_margin += (Number(employee_wage) + Number(other_expenses))
     const transaction = await Transaction.create({
       user_id: user.id,
       total_margin,

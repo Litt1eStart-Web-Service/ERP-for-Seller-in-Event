@@ -22,8 +22,8 @@ function App() {
         <Route path="/login" element={authUser ? <HomePage/> : <LogInPage />} />
         <Route path="/inventory" element={authUser ? <InventoryPage /> : <LogInPage/>} />
         <Route path="/workspace" element={authUser ? <WorkspacePage /> : <LogInPage/>} />
-        <Route path="/planner" element={authUser ? <PlannerPage /> : <LogInPage/>} />
-        <Route path="/transaction" element={authUser ? <TransactionPage /> : <LogInPage/>} />
+        <Route path="/planner/:id" element={authUser ? <PlannerPage /> : <LogInPage/>} />
+        <Route path="/transaction/:id" element={authUser ? <TransactionPage /> : <LogInPage/>} />
         <Route path="/location" element={authUser ? <LocationPage /> : <LogInPage/>} />
       </Routes>
       <Toaster 
