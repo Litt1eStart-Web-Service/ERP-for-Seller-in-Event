@@ -11,9 +11,10 @@ const PlannerHistoryCard = ({ planner }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          pl: 3
         }}
       >
-        <Typography>{planner.name}</Typography>
+        <Typography variant="h4">{planner.name}</Typography>
       </Card>
     </>
   );

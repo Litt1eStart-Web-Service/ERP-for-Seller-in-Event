@@ -4,11 +4,8 @@ import {
   TextField,
   Button,
   Card,
-  Box,
-  IconButton,
 } from "@mui/material";
 import LocationCard from "../component/LocationCard";
-import HomeIcon from "@mui/icons-material/Home";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
@@ -74,9 +71,6 @@ const YourComponent = () => {
     <Stack height="100vh" direction="row">
       {/* Location Card Container */}
       <Stack width="70%" height="100vh" sx={{ overflowY: "auto" }}>
-        <IconButton sx={{ width: 50, mx: 'auto', mt: 1}} onClick={()=>navigate('/')}>
-          <HomeIcon />
-        </IconButton>
         <Stack pt={3} pl={3} gap={2}>
           {locations.length === 0 && (
             <Card
@@ -125,6 +119,7 @@ const YourComponent = () => {
         <Button onClick={handleCreateLocation} sx={{ width: "60%" }}>
           Create
         </Button>
+        <Button variant="contained" onClick={()=>navigate('/')}>Go to Home Page</Button>
       </Stack>
     </Stack>
   );

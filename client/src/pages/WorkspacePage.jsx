@@ -8,16 +8,17 @@ import {
   MenuItem,
   Select,
   Box,
-  Card,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
 import PlannerCard from '../component/PlannerCard'
+import { useNavigate } from "react-router-dom";
 
 const WorkspacePage = () => {
   const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate()
   const { authUser } = useAuthContext()
 
   const [name, setName] = useState("");
@@ -142,6 +143,7 @@ const WorkspacePage = () => {
             sx={{ width: "60%" }}
           />
           <Button sx={{ width: "20%", height: 40 }} onClick={handleCreatePlanner} >Create</Button>
+          <Button variant="contained" onClick={()=>navigate('/')}>Go to Home Page</Button>
         </Stack>
       </Stack>
     </>

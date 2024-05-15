@@ -8,10 +8,12 @@ import {
 import React, { useEffect, useState } from "react";
 import InventoryProductCard from "../component/InventoryProductCard";
 import { useAuthContext } from "../context/AuthContext";
+import { useNavigate } from 'react-router-dom'
 import toast from "react-hot-toast";
 
 const InventoryPage = () => {
   const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate()
   const { authUser } = useAuthContext();
 
   const [open, setOpen] = React.useState(false);
@@ -160,6 +162,7 @@ const InventoryPage = () => {
             <Button color="inherit" onClick={()=>fetchFilterProductData('margin')}>Order by Margin</Button>
             <Button color="inherit" onClick={()=>fetchFilterProductData('price')}>Order by Sell Price</Button>
             <Button color="inherit" onClick={()=>fetchFilterProductData('estProfit')}>Order by Estimate Profit</Button>
+            <Button variant="contained" onClick={()=>navigate('/')} >Go to Home Page</Button>
           </Stack>
         </Stack>
       </Stack>
