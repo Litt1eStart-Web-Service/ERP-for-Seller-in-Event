@@ -1,5 +1,6 @@
 const Transaction = require("./model");
-const Order = require('../order/model')
+const Order = require('../order/model');
+const Product = require("../product/model");
 
 const getAll = async (req, res, next) => {
   const user = req.user;
@@ -68,12 +69,17 @@ const create = async (req, res, next) => {
   try {
 
     let total_margin = 0;
-    orders.map((order)=>{
+    
+    await Promise.all(orders.map(async(order)=>{
       const orderValue = order.amount * order.product_id.margin
+      const product = await Product.findById(order.product_id)
+      product.amount -= order.amount
+      await product.save()
       total_margin += orderValue
-    })
+    }))
 
     total_margin += (Number(employee_wage) + Number(other_expenses))
+
     const transaction = await Transaction.create({
       user_id: user.id,
       total_margin,
