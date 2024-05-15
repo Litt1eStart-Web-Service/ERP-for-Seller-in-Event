@@ -1,5 +1,5 @@
 const Transaction = require("./model");
-const Order = require('../order/model');
+const Location = require("../location/model")
 const Product = require("../product/model");
 
 const getAll = async (req, res, next) => {
@@ -78,7 +78,10 @@ const create = async (req, res, next) => {
       total_margin += orderValue
     }))
 
-    total_margin += (Number(employee_wage) + Number(other_expenses))
+    const locationData = await Location.findById(location)
+    
+    const other_margin = Number(employee_wage) + Number(other_expenses) + Number(locationData.price)
+    total_margin += other_margin
 
     const transaction = await Transaction.create({
       user_id: user.id,
@@ -88,7 +91,8 @@ const create = async (req, res, next) => {
       employee_wage,
       other_expenses,
       date,
-    });
+    })
+
     if (!transaction) throw new Error("Failed to create new Tranasction");
     res.status(200).json(transaction);
   } catch (error) {
