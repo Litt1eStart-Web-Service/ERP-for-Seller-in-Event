@@ -145,7 +145,10 @@ const PlannerPage = () => {
           amount: Number(amount),
         }),
       });
-      if (!res.ok) throw new Error(`Failed to Create new Order`);
+      if (!res.ok){
+        const err = await res.json()
+        throw new Error(err.error)
+      }
       await fetchOrderData();
       toast.success("Created new Order");
       clearInput();
