@@ -131,7 +131,7 @@ const getFilterdData = async (req, res, next) => {
 const filterdDataByFieldName = async(fieldName, user) => {
   let sortOptions = {}
   sortOptions[fieldName] = 1
-  const products = await Product.find({ user_id: user.id }, fieldName).sort(sortOptions)
+  const products = await Product.find({ user_id: user.id }).sort(sortOptions)
   return products
 }
 //Filterd Data

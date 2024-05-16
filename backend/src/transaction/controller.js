@@ -1,5 +1,6 @@
 const Transaction = require("./model");
-const Order = require('../order/model')
+const Location = require("../location/model")
+const Product = require("../product/model");
 
 const getAll = async (req, res, next) => {
   const user = req.user;
@@ -68,10 +69,19 @@ const create = async (req, res, next) => {
   try {
 
     let total_margin = 0;
-    orders.map((order)=>{
+    
+    await Promise.all(orders.map(async(order)=>{
       const orderValue = order.amount * order.product_id.margin
+      const product = await Product.findById(order.product_id)
+      product.amount -= order.amount
+      await product.save()
       total_margin += orderValue
-    })
+    }))
+
+    const locationData = await Location.findById(location)
+    
+    const other_margin = Number(employee_wage) + Number(other_expenses) + Number(locationData.price)
+    total_margin += other_margin
 
     const transaction = await Transaction.create({
       user_id: user.id,
@@ -81,7 +91,8 @@ const create = async (req, res, next) => {
       employee_wage,
       other_expenses,
       date,
-    });
+    })
+
     if (!transaction) throw new Error("Failed to create new Tranasction");
     res.status(200).json(transaction);
   } catch (error) {

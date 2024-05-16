@@ -1,3 +1,4 @@
+const Product = require("../product/model");
 const Order = require("./model");
 
 const create = async (req, res, next) => {
@@ -6,6 +7,16 @@ const create = async (req, res, next) => {
     return res.status(404).json({ error: "Credential not complete" });
 
   try {
+    const existed = await Order.findOne({planner_id, product_id})
+    if(existed){
+      throw new Error('This product already created in this planner')
+    }
+
+    const product = await Product.findById(product_id)
+    if(product.amount - amount < 0){
+      throw new Error('Product is not Enough')
+    }
+
     const order = await Order.create({ planner_id, product_id, amount });
     if (!order) throw new Error("Failed to create order");
     res.status(200).json(order);

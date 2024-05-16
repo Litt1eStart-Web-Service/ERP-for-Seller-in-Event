@@ -3,7 +3,7 @@ const Planner = require("./model");
 const getAll = async (req, res, next) => {
     const user = req.user
     try {
-        const planners = await Planner.find({user_id: user.id})
+        const planners = await Planner.find({user_id: user.id}).populate("location").exec()
         if(!planners) throw new Error('Resource not Found')
         res.status(200).json(planners)
     } catch (error) {
