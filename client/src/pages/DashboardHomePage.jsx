@@ -6,7 +6,7 @@ const DashboardHomePage = () => {
   return (
     <>
     <Stack width={"30%"} mx={"auto"} mt={10} gap={2}>
-        <Typography variant="h5">Welcome To ERP Project for your Buisiness</Typography>
+        <Typography variant="h5">Dashboard for Visualizing your Data</Typography>
         <Button
           sx={{ width: "70%", mx: "auto" }}
           size="large"
