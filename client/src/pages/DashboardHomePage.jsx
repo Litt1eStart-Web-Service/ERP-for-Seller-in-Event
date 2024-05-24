@@ -12,7 +12,14 @@ const DashboardHomePage = () => {
           size="large"
           onClick={() => navigate("/dashboard/accounting")}
         >
-          Dashboard (การเงิน)
+          Dashboard รายปี (การเงิน)
+        </Button>
+        <Button
+          sx={{ width: "70%", mx: "auto" }}
+          size="large"
+          onClick={() => navigate("/dashboard/accounting/specificMonth")}
+        >
+          Dashboard รายเดือน (การเงิน)
         </Button>
         <Button
           sx={{ width: "70%", mx: "auto", mt: 5 }}
