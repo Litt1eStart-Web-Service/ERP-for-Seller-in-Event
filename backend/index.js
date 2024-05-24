@@ -10,15 +10,23 @@ const orderRoute = require('./src/order/route')
 const connectDb = require('./connectDb')
 
 const devOrigin = 'http://localhost:5173'
+const prodOrigin = [process.env.PROD_ORIGIN_1, process.env.PROD_ORIGIN_2];
 
 const corsOptions = {
-    origin: devOrigin,
+    origin: prodOrigin,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }
 
 const app = express()
 require('dotenv').config()
+app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*'); 
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
 
 app.use(cors(corsOptions))
 app.use(express.json())
