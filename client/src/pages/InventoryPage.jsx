@@ -4,6 +4,8 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import InventoryProductCard from "../component/InventoryProductCard";
@@ -24,16 +26,15 @@ const InventoryPage = () => {
   const [amount, setAmount] = useState("");
   const [products, setProducts] = useState([]);
 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const clearInput = () => {
     setName("");
     setMargin("");
     setPrice("");
     setAmount("");
   };
-
-  const handleEdit = async() => {
-    console.log(name, margin, price, amount)
-  }
 
   const handleCreateProduct = async () => {
     try {
@@ -125,7 +126,7 @@ const InventoryPage = () => {
 
         {/*Input Container*/}
         <Stack width={"30%"} alignItems={"center"} gap={1} pt={2}>
-          <Typography variant="h5">Create New Product</Typography>
+          <Typography variant="h5" fontSize={isSmallScreen ? 20 : 30}>Create New Product</Typography>
           <TextField
             placeholder="Product Name"
             value={name}

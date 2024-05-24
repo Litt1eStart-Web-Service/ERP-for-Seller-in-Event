@@ -12,6 +12,8 @@ import PlannerPage from "./pages/PlannerPage";
 import TransactionPage from "./pages/TransactionPage";
 import LocationPage from './pages/LocationPage';
 import PlannerHistoryPage from './pages/PlannerHistoryPage';
+import DashboardHomePage from './pages/DashboardHomePage';
+import DashboardAccountingPage from './pages/DashboardAccountingPage';
 
 function App() {
   const { authUser } = useAuthContext()
@@ -27,6 +29,8 @@ function App() {
         <Route path="/planner/history" element={authUser ? <PlannerHistoryPage /> : <LogInPage/>} />
         <Route path="/transaction/:id" element={authUser ? <TransactionPage /> : <LogInPage/>} />
         <Route path="/location" element={authUser ? <LocationPage /> : <LogInPage/>} />
+        <Route path="/dashboard" element={authUser ? <DashboardHomePage /> : <LogInPage/>} />
+        <Route path="/dashboard/accounting" element={authUser ? <DashboardAccountingPage /> : <LogInPage/>} />
       </Routes>
       <Toaster 
         toastOptions={{

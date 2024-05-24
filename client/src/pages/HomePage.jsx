@@ -38,6 +38,13 @@ const Home = () => {
         <Button
           sx={{ width: "70%", mx: "auto" }}
           size="large"
+          onClick={() => navigate("/dashboard")}
+        >
+          Dashboard
+        </Button>
+        <Button
+          sx={{ width: "70%", mx: "auto" }}
+          size="large"
           onClick={() => navigate("/planner/history")}
         >
           History
