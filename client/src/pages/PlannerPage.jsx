@@ -22,7 +22,7 @@ import OrderCard from "../component/OrderCard";
 const PlannerPage = () => {
   const { id } = useParams();
   const { authUser } = useAuthContext();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [plannerData, setPlannerData] = useState(null);
@@ -58,13 +58,14 @@ const PlannerPage = () => {
 
   const handleCreateTransaction = async () => {
     try {
-      if (total_sales === "" || other_expenses === "") throw new Error('Please complete all fields');
+      if (total_sales === "" || other_expenses === "")
+        throw new Error("Please complete all fields");
       const order_res = await fetch(`${API_URL}/api/v1/order/${id}`, {
         headers: {
-          Authorization: `Bearer ${authUser}`
-        }
+          Authorization: `Bearer ${authUser}`,
+        },
       });
-      if (!order_res.ok) throw new Error('Failed to get order data');
+      if (!order_res.ok) throw new Error("Failed to get order data");
       const data = await order_res.json();
 
       const orders = data.map((order) => ({
@@ -77,7 +78,7 @@ const PlannerPage = () => {
           createdAt: order.planner_id.createdAt,
           updatedAt: order.planner_id.updatedAt,
           name: order.planner_id.name,
-          __v: order.planner_id.__v
+          __v: order.planner_id.__v,
         },
         product_id: {
           _id: order.product_id._id,
@@ -89,10 +90,10 @@ const PlannerPage = () => {
           estValue: order.product_id.estValue,
           totalMargin: order.product_id.totalMargin,
           estProfit: order.product_id.estProfit,
-          __v: order.product_id.__v
+          __v: order.product_id.__v,
         },
         amount: order.amount,
-        __v: order.__v
+        __v: order.__v,
       }));
 
       const bodyData = {
@@ -101,30 +102,36 @@ const PlannerPage = () => {
         location: plannerData.location,
         employee_wage: plannerData.employee_wage,
         other_expenses,
-        date: new Date()
+        date: new Date(),
       };
 
-      const transaction_res = await fetch(`${API_URL}/api/v1/transaction/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authUser}`
-        },
-        body: JSON.stringify(bodyData)
-      });
-
-      if (!transaction_res.ok) throw new Error('Failed to create transaction');
-      toast.success("Transaction created successfully");
-      const transaction = await transaction_res.json()
-
-      const edit_res = await fetch(`${API_URL}/api/v1/planner/edit/status/${id}`, {
-        method: "PUT",
-        headers:{
-          "Authorization": `Bearer ${authUser}`
+      const transaction_res = await fetch(
+        `${API_URL}/api/v1/transaction/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authUser}`,
+          },
+          body: JSON.stringify(bodyData),
         }
-      })
-      if(!edit_res.ok) throw new Error('Failed to Update Planner Status')
-      navigate(`/transaction/${transaction._id}`)
+      );
+
+      if (!transaction_res.ok) throw new Error("Failed to create transaction");
+      toast.success("Transaction created successfully");
+      const transaction = await transaction_res.json();
+
+      const edit_res = await fetch(
+        `${API_URL}/api/v1/planner/edit/status/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${authUser}`,
+          },
+        }
+      );
+      if (!edit_res.ok) throw new Error("Failed to Update Planner Status");
+      navigate(`/transaction/${transaction._id}`);
     } catch (error) {
       toast.error(error.message);
     }
@@ -132,7 +139,8 @@ const PlannerPage = () => {
 
   const handleCreateOrder = async () => {
     try {
-      if (product === "" || amount === "") throw new Error('Please complete all fields');
+      if (product === "" || amount === "")
+        throw new Error("Please complete all fields");
       const res = await fetch(`${API_URL}/api/v1/order/create`, {
         method: "POST",
         headers: {
@@ -145,9 +153,9 @@ const PlannerPage = () => {
           amount: Number(amount),
         }),
       });
-      if (!res.ok){
-        const err = await res.json()
-        throw new Error(err.error)
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error);
       }
       await fetchOrderData();
       toast.success("Created new Order");
@@ -193,6 +201,8 @@ const PlannerPage = () => {
     fetchProductData();
   }, []);
 
+  console.log(product);
+
   return (
     <>
       <Stack direction={"row"} height={"100vh"}>
@@ -206,7 +216,11 @@ const PlannerPage = () => {
             gap={2}
           >
             {order.map((order) => (
-              <OrderCard key={order._id} order={order} fetchOrderData={fetchOrderData} />
+              <OrderCard
+                key={order._id}
+                order={order}
+                fetchOrderData={fetchOrderData}
+              />
             ))}
           </Stack>
         </Stack>
@@ -225,12 +239,8 @@ const PlannerPage = () => {
                 onChange={(e) => setProduct(e.target.value)}
               >
                 {productList?.map((product) => (
-                  <MenuItem
-                    key={product._id}
-                    value={product}
-                    fetchOrderData={fetchOrderData}
-                  >
-                    {product.name}
+                  <MenuItem key={product._id} value={product}>
+                    <Typography>{product.name}</Typography>
                   </MenuItem>
                 ))}
               </Select>
@@ -246,19 +256,31 @@ const PlannerPage = () => {
             Create
           </Button>
 
-          <TextField 
+          <TextField
             placeholder="Total Sales"
             value={total_sales}
-            onChange={(e)=>setTotalSales(e.target.value)}
-            sx={{ mt: 5}}
+            onChange={(e) => setTotalSales(e.target.value)}
+            sx={{ mt: 5 }}
           />
-          <TextField 
+          <TextField
             placeholder="Other Expenses"
             value={other_expenses}
-            onChange={(e)=>setOtherExpenses(e.target.value)}
+            onChange={(e) => setOtherExpenses(e.target.value)}
           />
-          <Button variant="contained" size="large" onClick={handleCreateTransaction}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleCreateTransaction}
+          >
             Create Transaction
+          </Button>
+          <Button
+            variant="outlined"
+            color="warning"
+            size="large"
+            onClick={() => navigate("/")}
+          >
+            Home Page
           </Button>
         </Stack>
       </Stack>

@@ -42,8 +42,6 @@ const TransactionPage = () => {
     }
   };
 
-  console.log(transactionData);
-
   useEffect(() => {
     loadTransactionData();
   }, []);
@@ -66,6 +64,7 @@ const TransactionPage = () => {
           alignItems={"center"}
         >
           <Typography>ยอดขาย: {transactionData.total_sales}</Typography>
+          <Typography>ต้นทุนทั้งหมด: {transactionData.total_margin}</Typography>
           <Typography>กำไรสุทธิ: {transactionData.total_profit}</Typography>
           <Typography variant="h4">ข้อมูลต้นทุน</Typography>
         </Stack>

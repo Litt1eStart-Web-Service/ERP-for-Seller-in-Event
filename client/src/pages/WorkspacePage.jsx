@@ -106,7 +106,7 @@ const WorkspacePage = () => {
             gap={2}
           >
             {planners?.map(planner => (
-              <PlannerCard planner={planner} fetchPlannerData={fetchPlannerData} />
+              <PlannerCard key={planner._id} planner={planner} fetchPlannerData={fetchPlannerData} />
             ))}
           </Stack>
         </Stack>
@@ -131,7 +131,7 @@ const WorkspacePage = () => {
                 onChange={(e)=>setLocation(e.target.value)}
               >
                 {locationList?.map(location => (
-                  <MenuItem value={location._id}>{location.name}</MenuItem>
+                  <MenuItem key={location._id} value={location._id}>{location.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
