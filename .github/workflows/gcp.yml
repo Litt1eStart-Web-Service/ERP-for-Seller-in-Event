@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Print Service Account Key Content
-      run: echo '${{ env.SERVICE_ACCOUNT }}''
+      run: echo "${{ env.SERVICE_ACCOUNT }}"
       
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
