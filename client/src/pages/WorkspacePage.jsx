@@ -8,6 +8,8 @@ import {
   MenuItem,
   Select,
   Box,
+  useTheme,
+  useMediaQuery
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
@@ -27,6 +29,10 @@ const WorkspacePage = () => {
 
   const [locationList, setLocationList] = useState([])
   const [planners, setPlanners] = useState([])
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
+
 
   const clearInput = () =>{ 
     setName("")
@@ -113,7 +119,7 @@ const WorkspacePage = () => {
 
         {/*Input Container*/}
         <Stack width={"30%"} alignItems={"center"} gap={1} pt={2}>
-          <Typography variant="h5">Create New Planner</Typography>
+          <Typography variant={isSmallScreen ? "h5" : "h4"}>Create New Planner</Typography>
           <TextField
             placeholder="Name"
             value={name}
