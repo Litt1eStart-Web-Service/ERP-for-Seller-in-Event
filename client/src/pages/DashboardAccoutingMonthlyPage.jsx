@@ -17,7 +17,7 @@ import {
   Select,
   MenuItem,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/Home";
@@ -66,7 +66,6 @@ const DashboardMonthlyPage = () => {
       }
       const jsonData = await response.json();
 
-      // Transform data into Recharts-compatible format
       const transformedData = jsonData.map((item) => ({
         week: item.week,
         total_sales: item.totalSales,
@@ -82,7 +81,11 @@ const DashboardMonthlyPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [month, year, authUser]); // Re-run effect when month, year, or authUser changes
+  }, [month, year, authUser]);
+
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   return (
     <div style={{ width: "100%", height: 400 }}>
@@ -110,13 +113,15 @@ const DashboardMonthlyPage = () => {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            label="Age"
+            label="Month"
             value={month}
             onChange={(e) => setMonth(e.target.value)}
             sx={{ width: "auto" }}
           >
-            {months?.map((m) => (
-              <MenuItem value={m}>{m}</MenuItem>
+            {months.map((m) => (
+              <MenuItem key={m} value={m}>
+                {m}
+              </MenuItem>
             ))}
           </Select>
 
@@ -139,7 +144,7 @@ const DashboardMonthlyPage = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="week" />
           <YAxis />
-          <Tooltip />
+          <Tooltip formatter={(value) => formatNumber(value)} />
           <Legend />
           <Bar dataKey="total_sales" name="ยอดขายทั้งหมด" fill="#8884d8" />
           <Bar dataKey="total_margin" name="ต้นทุนทั้งหมด" fill="#82ca9d" />

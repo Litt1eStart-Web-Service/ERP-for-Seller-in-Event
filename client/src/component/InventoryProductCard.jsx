@@ -95,6 +95,7 @@ const InventoryProductCard = ({ product, fetchProductData }) => {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+          flexShrink: 0, // Prevents the card from shrinking
         }}
         variant="outlined"
       >

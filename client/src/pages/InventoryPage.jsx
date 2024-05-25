@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 
 const InventoryPage = () => {
   const API_URL = import.meta.env.VITE_API_URL;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { authUser } = useAuthContext();
 
   const [open, setOpen] = React.useState(false);
@@ -39,7 +39,7 @@ const InventoryPage = () => {
   const handleCreateProduct = async () => {
     try {
       if (name === "" || margin === "" || price === "" || amount === "")
-        throw new Error("Please Complete All Field");
+        throw new Error("Please Complete All Fields");
 
       const body = {
         name,
@@ -56,7 +56,7 @@ const InventoryPage = () => {
         body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error(res.error);
-      toast.success("Create New Product");
+      toast.success("Created New Product");
       clearInput();
       await fetchProductData();
     } catch (error) {
@@ -82,19 +82,19 @@ const InventoryPage = () => {
 
   const fetchFilterProductData = async (dataType) => {
     try {
-      const res = await fetch(`${API_URL}/api/v1/product/filteredData/${dataType}`,{
+      const res = await fetch(`${API_URL}/api/v1/product/filteredData/${dataType}`, {
         headers: {
           "Authorization": `Bearer ${authUser}`
         }
-      })
-      if(!res.ok) throw new Error('there is no data')
-      const data = await res.json()
-      setProducts(data)
-      toast.success(`Product Data Filter by ${dataType}`)
+      });
+      if (!res.ok) throw new Error('There is no data');
+      const data = await res.json();
+      setProducts(data);
+      toast.success(`Product Data Filtered by ${dataType}`);
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  }
+  };
 
   useEffect(() => {
     fetchProductData();
@@ -103,14 +103,14 @@ const InventoryPage = () => {
   return (
     <>
       <Stack direction={"row"} height={"100vh"}>
-        {/*Product Container*/}
-        <Stack width={"70%"}>
+        {/* Product Container */}
+        <Stack width={"70%"} height={"100%"} sx={{ overflowY: "auto" }}>
           <Stack
             height={"100%"}
             border={"1px solid"}
             pt={3}
-            sx={{ overflowY: "auto" }}
             gap={2}
+            sx={{ flexGrow: 1 }}
           >
             {products?.map((product) => (
               <InventoryProductCard
@@ -119,12 +119,13 @@ const InventoryPage = () => {
                 fetchProductData={fetchProductData}
                 open={open}
                 setOpen={setOpen}
+                sx={{ flexShrink: 0 }} // Ensures items do not shrink
               />
             ))}
           </Stack>
         </Stack>
 
-        {/*Input Container*/}
+        {/* Input Container */}
         <Stack width={"30%"} alignItems={"center"} gap={1} pt={2}>
           <Typography variant="h5" fontSize={isSmallScreen ? 20 : 30}>Create New Product</Typography>
           <TextField
@@ -160,14 +161,13 @@ const InventoryPage = () => {
           
           {/* Filtering Choice */}
           <Stack justifyContent={'flex-start'} alignItems={'center'}>
-            <Button color="inherit" onClick={()=>fetchFilterProductData('margin')}>Order by Margin</Button>
-            <Button color="inherit" onClick={()=>fetchFilterProductData('price')}>Order by Sell Price</Button>
-            <Button color="inherit" onClick={()=>fetchFilterProductData('estProfit')}>Order by Estimate Profit</Button>
-            <Button variant="contained" onClick={()=>navigate('/')} >Go to Home Page</Button>
+            <Button color="inherit" onClick={() => fetchFilterProductData('margin')}>Order by Margin</Button>
+            <Button color="inherit" onClick={() => fetchFilterProductData('price')}>Order by Sell Price</Button>
+            <Button color="inherit" onClick={() => fetchFilterProductData('estProfit')}>Order by Estimate Profit</Button>
+            <Button variant="contained" onClick={() => navigate('/')}>Go to Home Page</Button>
           </Stack>
         </Stack>
       </Stack>
-      
     </>
   );
 };
