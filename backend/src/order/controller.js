@@ -52,4 +52,20 @@ const deleteById = async (req, res, next) => {
   }
 };
 
-module.exports = { create, getAll, deleteById };
+const editOrderById = async(req, res, next) => {
+  const {id} = req.params;
+  const {amount} = req.body;
+  if (!id) return res.status(404).json({ error: "Credential not complete" });
+
+  try {
+    const order = await Order.findById(id);
+    if (!order) throw new Error("Resource not Found");
+    order.amount = amount;
+    await order.save();
+    res.status(200).json(order);
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { create, getAll, deleteById, editOrderById };

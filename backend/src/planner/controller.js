@@ -26,7 +26,7 @@ const getById = async (req, res, next) => {
 const create = async (req, res, next) => {
   const user = req.user;
   const { name, location, employee_wage } = req.body;
-  if (!location || !employee_wage) throw new Error("Credential not Complete");
+  if (!location) throw new Error("Credential not Complete");
   try {
     let planner;
     if (name === "") {

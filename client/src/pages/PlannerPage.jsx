@@ -12,8 +12,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Card,
-  Divider,
 } from "@mui/material";
 
 import toast from "react-hot-toast";
@@ -230,10 +228,8 @@ const PlannerPage = () => {
           <Typography variant="h5">Create New Order</Typography>
           <Box sx={{ width: "60%" }}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Product</InputLabel>
+              <InputLabel>Product</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
                 label="Product"
                 value={product}
                 onChange={(e) => setProduct(e.target.value)}
@@ -246,6 +242,7 @@ const PlannerPage = () => {
               </Select>
             </FormControl>
           </Box>
+
           <TextField
             placeholder="Amount"
             sx={{ width: "60%" }}
