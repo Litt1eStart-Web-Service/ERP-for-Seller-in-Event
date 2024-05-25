@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: erp-backend-gcr
-      PROJECT_ID: erp-for-seller-backend
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT_KEY}}
     steps:
     - name: Checkout
