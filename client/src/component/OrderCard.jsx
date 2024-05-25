@@ -1,7 +1,17 @@
 import Delete from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
-import { Button, Card, IconButton, Modal, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  IconButton,
+  Modal,
+  Stack,
+  TextField,
+  Typography,
+  useTheme, 
+  useMediaQuery
+} from "@mui/material";
 import React, { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
@@ -12,6 +22,9 @@ const OrderCard = ({ order, fetchOrderData }) => {
 
   const [amount, setAmount] = useState(order.amount);
   const [open, setOpen] = useState(false);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const handleDeleteOrder = async () => {
     try {
@@ -33,13 +46,13 @@ const OrderCard = ({ order, fetchOrderData }) => {
 
   console.log(order);
 
-  const handleOpenModal = async() => {
+  const handleOpenModal = async () => {
     setOpen(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setOpen(false);
-  }
+  };
 
   const handleEditOrder = async () => {
     try {
@@ -50,8 +63,8 @@ const OrderCard = ({ order, fetchOrderData }) => {
           Authorization: `Bearer ${authUser}`,
         },
         body: JSON.stringify({
-          amount
-        })
+          amount,
+        }),
       });
 
       if (!res.ok) throw new Error("Failed to Update Order");
@@ -68,7 +81,7 @@ const OrderCard = ({ order, fetchOrderData }) => {
         variant="outlined"
         sx={{
           height: 70,
-          width: "70%",
+          width: isSmallScreen ? "90%" : "70%",
           display: "flex",
           direction: "row",
           alignItems: "center",
@@ -76,22 +89,22 @@ const OrderCard = ({ order, fetchOrderData }) => {
         }}
       >
         <Stack
-          width={"90%"}
+          width={isSmallScreen ? "80%" : "90%"}
           height={"100%"}
           direction={"row"}
           justifyContent={"space-between"}
           alignItems={"center"}
           pl={3}
         >
-          <Typography variant="h4">{order.product_id.name}</Typography>
-          <Typography variant="h5">{order.amount} หน่วย</Typography>
+          <Typography variant={isSmallScreen ? "h5" : "h4"}>{order.product_id.name}</Typography>
+          <Typography variant={isSmallScreen ? "h6" : "h5"}>{order.amount} หน่วย</Typography>
         </Stack>
         <Stack
-          width={"10%"}
+          width={isSmallScreen ? "20%" :"10%"}
           height={"100%"}
           justifyContent={"center"}
           alignItems={"center"}
-          direction={'row'}
+          direction={"row"}
         >
           <IconButton color="error" onClick={handleDeleteOrder}>
             <Delete />
@@ -119,8 +132,14 @@ const OrderCard = ({ order, fetchOrderData }) => {
           alignItems={"center"}
           gap={0.5}
         >
-          <TextField label="new amount" value={amount} onChange={(e)=>setAmount(e.target.value)} />
-          <Button sx={{ mb: 1, mt: 1}} onClick={handleEditOrder}>Confirm</Button>
+          <TextField
+            label="new amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <Button sx={{ mb: 1, mt: 1 }} onClick={handleEditOrder}>
+            Confirm
+          </Button>
         </Stack>
       </Modal>
     </>

@@ -12,6 +12,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  useTheme,
+  useMediaQuery
 } from "@mui/material";
 
 import toast from "react-hot-toast";
@@ -31,6 +33,9 @@ const PlannerPage = () => {
 
   const [order, setOrder] = useState([]);
   const [productList, setProductList] = useState([]);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const clearInput = () => {
     setProduct("");
@@ -205,7 +210,7 @@ const PlannerPage = () => {
     <>
       <Stack direction={"row"} height={"100vh"}>
         {/*Product Container*/}
-        <Stack width={"70%"}>
+        <Stack width={isSmallScreen ? "65%" : "70%"}>
           <Stack
             height={"100%"}
             border={"1px solid"}
@@ -224,8 +229,8 @@ const PlannerPage = () => {
         </Stack>
 
         {/*Input Container*/}
-        <Stack width={"30%"} alignItems={"center"} gap={1} pt={2}>
-          <Typography variant="h5">Create New Order</Typography>
+        <Stack width={isSmallScreen ? "35%" : "30%"} alignItems={"center"} gap={1} pt={2}>
+          <Typography variant={isSmallScreen ? "h6" : "h5"}>Create New Order</Typography>
           <Box sx={{ width: "60%" }}>
             <FormControl fullWidth>
               <InputLabel>Product</InputLabel>
@@ -257,17 +262,19 @@ const PlannerPage = () => {
             placeholder="Total Sales"
             value={total_sales}
             onChange={(e) => setTotalSales(e.target.value)}
-            sx={{ mt: 5 }}
+            sx={{ mt: 5, width: '65%' }}
           />
           <TextField
             placeholder="Other Expenses"
             value={other_expenses}
             onChange={(e) => setOtherExpenses(e.target.value)}
+            sx={{ width: '65%' }}
           />
           <Button
             variant="contained"
             size="large"
             onClick={handleCreateTransaction}
+            sx={{ width: '65%'}}
           >
             Create Transaction
           </Button>
