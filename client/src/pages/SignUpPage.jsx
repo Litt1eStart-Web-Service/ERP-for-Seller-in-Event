@@ -1,4 +1,4 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Button, Stack, TextField, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,10 @@ const SignUpPage = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
+
 
   const handleConfirm = async() => {
     try {
@@ -36,7 +40,7 @@ const SignUpPage = () => {
   }
 
   return (
-    <Stack width={"30%"} mx={"auto"} mt={"10%"} gap={3}>
+    <Stack width={isSmallScreen ? "60%" :"30%"} mx={"auto"} mt={"10%"} gap={3}>
       <Typography variant="h2">Signup</Typography>
       <TextField placeholder="username" value={username} onChange={(e)=>setUsername(e.target.value)} />
       <TextField type="password" placeholder="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
