@@ -26,9 +26,12 @@ jobs:
     - name: Verify Authentication
       run: gcloud auth list
 
+    - name: Verify Configuration
+      run: gcloud config list
+
     - name: Build Docker Image
       run: docker build -t $IMAGE_NAME:latest ./backend
-     
+
     - name: Tag and Push Docker Image
       env: 
         GIT_TAG: v0.1.0
