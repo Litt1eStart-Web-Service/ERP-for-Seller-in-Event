@@ -9,7 +9,7 @@ jobs:
     env:
       IMAGE_NAME: erp-backend-gcr
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SERVICE_ACCOUNT: ${{ JSON.stringify(secrets.SERVICE_ACCOUNT_KEY)}}
+      SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT_KEY }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
