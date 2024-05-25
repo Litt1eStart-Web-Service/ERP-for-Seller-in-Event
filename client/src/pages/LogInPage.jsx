@@ -1,4 +1,11 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -6,10 +13,13 @@ import { useAuthContext } from "../context/AuthContext";
 const LogInPage = () => {
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
-  const { setAuthUser } = useAuthContext()
+  const { setAuthUser } = useAuthContext();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const handleConfirm = async () => {
     try {
@@ -36,7 +46,7 @@ const LogInPage = () => {
   };
 
   return (
-    <Stack width={"30%"} mx={"auto"} mt={"10%"} gap={3}>
+    <Stack width={isSmallScreen ? "60%" :"30%"} mx={"auto"} mt={"10%"} gap={3} >
       <Typography variant="h2">Login</Typography>
       <TextField
         placeholder="username"

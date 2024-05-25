@@ -1,4 +1,4 @@
-import { Card, IconButton, Stack, Typography } from "@mui/material";
+import { Card, IconButton, Stack, Typography, useTheme, useMediaQuery } from "@mui/material";
 import LaunchIcon from '@mui/icons-material/Launch';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -27,6 +27,10 @@ const PlannerCard = ({planner, fetchPlannerData}) => {
       toast.error(error.message)
     }
   }
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
+
   return (
     <>
       <Card sx={{
@@ -39,9 +43,9 @@ const PlannerCard = ({planner, fetchPlannerData}) => {
       }}>
         <Stack width={'100%'} height={'100%'} direction={'row'}>
           <Stack width={'80%'} justifyContent={'center'} pl={5}>
-            <Typography variant="h3" width={'100%'} textAlign={'left'}>{planner.name}</Typography>
-            <Typography variant="h5" width={'100%'} textAlign={'left'}>ค่าเช่าพื้นที่: {planner.location.price} บาท</Typography>
-            <Typography variant="h5" width={'100%'} textAlign={'left'}>ค่าจ้างลูกน้อง: {planner.employee_wage} บาท</Typography>
+            <Typography variant={isSmallScreen ? "h4" : "h3"} width={'100%'} textAlign={'left'}>{planner.name}</Typography>
+            <Typography variant={isSmallScreen ? "h6" : "h5"} width={'100%'} textAlign={'left'}>ค่าเช่าพื้นที่: {planner.location.price} บาท</Typography>
+            <Typography variant={isSmallScreen ? "h6" : "h5"} width={'100%'} textAlign={'left'}>ค่าจ้างลูกน้อง: {planner.employee_wage} บาท</Typography>
           </Stack>
           <Stack width={'20%'} justifyContent={'center'}>
             <IconButton sx={{ width: 70, mx: 'auto'}} onClick={()=>navigate(`/planner/${planner._id}`)}>

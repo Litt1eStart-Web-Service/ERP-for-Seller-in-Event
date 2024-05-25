@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography, useTheme, useMediaQuery } from "@mui/material";
 
 const TransactionPage = () => {
   const { id } = useParams();
@@ -11,6 +11,9 @@ const TransactionPage = () => {
   const navigate = useNavigate()
 
   const [transactionData, setTransactionData] = useState(null);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const formattedDate = (strDate) => {
     const date = new Date(strDate);
@@ -49,16 +52,16 @@ const TransactionPage = () => {
   if (transactionData) {
     return (
       <Stack pt={5}>
-        <Typography variant="h3">
+        <Typography variant={isSmallScreen ? "h4" : "h3"}>
           วันที่ขายของ: {formattedDate(transactionData?.date)}{" "}
         </Typography>
-        <Typography variant="h4">
+        <Typography variant={isSmallScreen ? "h5" : "h4"}>
           สถานที่: {transactionData.location.name}{" "}
         </Typography>
-        <Typography variant="h4">ข้อมูลทางการเงิน</Typography>
+        <Typography variant={isSmallScreen ? "h5" : "h4"}>ข้อมูลทางการเงิน</Typography>
 
         <Stack
-          width={"10%"}
+          width={isSmallScreen ? "30%" : "10%"}
           mx={"auto"}
           justifyContent={"flex-start"}
           alignItems={"center"}
@@ -70,7 +73,7 @@ const TransactionPage = () => {
         </Stack>
 
         <Stack
-          width={"10%"}
+          width={isSmallScreen ? "30%" : "10%"}
           mx={"auto"}
           justifyContent={"flex-start"}
           alignItems={"center"}

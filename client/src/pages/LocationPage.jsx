@@ -4,6 +4,8 @@ import {
   TextField,
   Button,
   Card,
+  useTheme, 
+  useMediaQuery
 } from "@mui/material";
 import LocationCard from "../component/LocationCard";
 import { useEffect, useState } from "react";
@@ -19,6 +21,9 @@ const YourComponent = () => {
   const API_URI = import.meta.env.VITE_API_URL;
   const { authUser } = useAuthContext();
   const navigate = useNavigate()
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const clearInput = () => {
     setName("");
@@ -70,7 +75,7 @@ const YourComponent = () => {
   return (
     <Stack height="100vh" direction="row">
       {/* Location Card Container */}
-      <Stack width="70%" height="100vh" sx={{ overflowY: "auto" }}>
+      <Stack width={isSmallScreen ? "60%" : "70%"} height="100vh" sx={{ overflowY: "auto" }}>
         <Stack pt={3} pl={3} gap={2}>
           {locations.length === 0 && (
             <Card
@@ -95,13 +100,13 @@ const YourComponent = () => {
 
       {/* Input Container */}
       <Stack
-        width="30%"
+        width={isSmallScreen ? "40%" : "30%"}
         height="100%"
         justifyContent="flex-start"
         alignItems="center"
         gap={2}
       >
-        <Typography variant="h5" mt={5}>
+        <Typography variant={isSmallScreen ? "h6" : "h5"} mt={5}>
           Create new Location
         </Typography>
         <TextField

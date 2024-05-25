@@ -26,7 +26,7 @@ const InventoryProductCard = ({ product, fetchProductData }) => {
   const [amount, setAmount] = useState("");
 
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const handleDeleteProduct = async () => {
     try {

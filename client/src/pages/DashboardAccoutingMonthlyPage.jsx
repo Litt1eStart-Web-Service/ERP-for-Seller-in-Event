@@ -10,15 +10,14 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import {
-  Button,
   IconButton,
   Stack,
   TextField,
   Typography,
-  FormControl,
-  InputLabel,
   Select,
   MenuItem,
+  useTheme,
+  useMediaQuery
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/Home";
@@ -48,6 +47,9 @@ const DashboardMonthlyPage = () => {
   const [data, setData] = useState([]);
   const [month, setMonth] = useState(months[new Date().getMonth()]);
   const [year, setYear] = useState(new Date().getFullYear());
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const fetchData = async () => {
     try {
@@ -122,7 +124,7 @@ const DashboardMonthlyPage = () => {
             value={year}
             onChange={(e) => setYear(e.target.value)}
             placeholder="Year"
-            sx={{ width: "7%" }}
+            sx={{ width: isSmallScreen ? "20%" : "10%" }}
           />
           <IconButton onClick={fetchData}>
             <SearchIcon />
@@ -139,9 +141,9 @@ const DashboardMonthlyPage = () => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="total_sales" name="Total Sales" fill="#8884d8" />
-          <Bar dataKey="total_margin" name="Total Margin" fill="#82ca9d" />
-          <Bar dataKey="total_profit" name="Total Profit" fill="#ffc658" />
+          <Bar dataKey="total_sales" name="ยอดขายทั้งหมด" fill="#8884d8" />
+          <Bar dataKey="total_margin" name="ต้นทุนทั้งหมด" fill="#82ca9d" />
+          <Bar dataKey="total_profit" name="กำไรทั้งหมด" fill="#ffc658" />
         </BarChart>
       </ResponsiveContainer>
     </div>
