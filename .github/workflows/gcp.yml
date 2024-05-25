@@ -9,14 +9,18 @@ jobs:
     env:
       IMAGE_NAME: erp-backend-gcr
       PROJECT_ID: erp-for-seller-backend
+      SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT_KEY}}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Print Secret Value
+      run: echo "Secrets Value is ${{ env.SERVICE_ACCOUNT }}"
+      
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
       with:
-        service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        service_account_key: ${{ env.SERVICE_ACCOUNT }}
         project_id: ${{ env.PROJECT_ID }}
         export_default_credentials: true
 
@@ -30,7 +34,7 @@ jobs:
       run: docker build -t $IMAGE_NAME:latest ./backend
 
     - name: Explicit gcloud login
-      run: gcloud auth activate-service-account --key-file=${{ secrets.SERVICE_ACCOUNT_KEY }}
+      run: gcloud auth activate-service-account --key-file=${{ env.SERVICE_ACCOUNT }}
 
     - name: Tag and Push Docker Image
       env: 
