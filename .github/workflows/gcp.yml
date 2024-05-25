@@ -7,7 +7,7 @@ jobs:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: erp-backend
+      IMAGE_NAME: erp-backend-gcr
       PROJECT_ID: erp-for-seller-backend
     steps:
     - name: Checkout
