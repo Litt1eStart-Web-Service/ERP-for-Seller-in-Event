@@ -26,11 +26,11 @@ jobs:
     - name: Verify Authentication
       run: gcloud auth list
 
-    - name: Verify Configuration
-      run: gcloud config list
-
     - name: Build Docker Image
       run: docker build -t $IMAGE_NAME:latest ./backend
+
+    - name: Explicit gcloud login
+      run: gcloud auth activate-service-account --key-file=${{ secrets.SERVICE_ACCOUNT_KEY }}
 
     - name: Tag and Push Docker Image
       env: 
