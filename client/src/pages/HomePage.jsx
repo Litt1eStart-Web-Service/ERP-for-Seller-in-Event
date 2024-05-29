@@ -47,6 +47,13 @@ const Home = () => {
           Dashboard
         </Button>
         <Button
+          sx={{ width: "70%", mx: "auto"}}
+          size="large"
+          onClick={() => navigate("/planner/history")}        
+        >
+          History
+        </Button>
+        <Button
           sx={{ width: "70%", mx: "auto", mt: 5 }}
           size="large"
           onClick={handleLogout}

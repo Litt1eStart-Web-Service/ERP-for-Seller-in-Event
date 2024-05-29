@@ -15,6 +15,7 @@ import PlannerHistoryPage from './pages/PlannerHistoryPage';
 import DashboardHomePage from './pages/DashboardHomePage';
 import DashboardAccountingPage from './pages/DashboardAccountingPage';
 import DashboardMonthlyPage from './pages/DashboardAccoutingMonthlyPage';
+import PlannerCompletedPage from './pages/PlannerCompletedPage';
 
 function App() {
   const { authUser } = useAuthContext()
@@ -28,6 +29,7 @@ function App() {
         <Route path="/workspace" element={authUser ? <WorkspacePage /> : <LogInPage/>} />
         <Route path="/planner/:id" element={authUser ? <PlannerPage /> : <LogInPage/>} />
         <Route path="/planner/history" element={authUser ? <PlannerHistoryPage /> : <LogInPage/>} />
+        <Route path="/planner/history/planner/completed/:id" element={authUser ? <PlannerCompletedPage /> : <LogInPage/>} />
         <Route path="/transaction/:id" element={authUser ? <TransactionPage /> : <LogInPage/>} />
         <Route path="/location" element={authUser ? <LocationPage /> : <LogInPage/>} />
         <Route path="/dashboard" element={authUser ? <DashboardHomePage /> : <LogInPage/>} />
