@@ -1,7 +1,8 @@
 const Transaction = require("./model");
-const Location = require("../location/model")
+const Location = require("../location/model");
 const Product = require("../product/model");
-const { getISOWeek, getWeeksInMonth } = require('date-fns'); // Import getISOWeek function from date-fns library
+const lineNotify = require("../utils/lineNotify");
+const { getISOWeek, getWeeksInMonth } = require("date-fns"); // Import getISOWeek function from date-fns library
 
 const getAll = async (req, res, next) => {
   const user = req.user;
@@ -59,30 +60,28 @@ const getById = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   const user = req.user;
-  const {
-    orders,
-    total_sales,
-    location,
-    employee_wage,
-    other_expenses,
-    date,
-  } = req.body;
+  const { orders, total_sales, location, employee_wage, other_expenses, date } =
+    req.body;
   try {
-
     let total_margin = 0;
-    
-    await Promise.all(orders.map(async(order)=>{
-      const orderValue = order.amount * order.product_id.margin
-      const product = await Product.findById(order.product_id)
-      product.amount -= order.amount
-      await product.save()
-      total_margin += orderValue
-    }))
 
-    const locationData = await Location.findById(location)
-    
-    const other_margin = Number(employee_wage) + Number(other_expenses) + Number(locationData.price)
-    total_margin += other_margin
+    await Promise.all(
+      orders.map(async (order) => {
+        const orderValue = order.amount * order.product_id.margin;
+        const product = await Product.findById(order.product_id);
+        product.amount -= order.amount;
+        await product.save();
+        total_margin += orderValue;
+      })
+    );
+
+    const locationData = await Location.findById(location);
+
+    const other_margin =
+      Number(employee_wage) +
+      Number(other_expenses) +
+      Number(locationData.price);
+    total_margin += other_margin;
 
     const transaction = await Transaction.create({
       user_id: user.id,
@@ -93,6 +92,25 @@ const create = async (req, res, next) => {
       other_expenses,
       date,
     })
+
+    const profit = transaction.total_sales - transaction.total_margin;
+    const margin = transaction.total_margin;
+    const profitPercentage = Math.floor(
+      ((profit) / margin) *
+        100
+    );
+
+    const currentDate = new Date();
+    const message = `${currentDate.toLocaleDateString("th-TH", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })}\nสถานที่: ${locationData.name} \n-ยอดขาย: ${transaction.total_sales.toLocaleString()} บาท\n-ต้นทุนทั้งหมด: ${transaction.total_margin.toLocaleString()} บาท\n-กำไร: ${(
+      transaction.total_sales - transaction.total_margin
+    ).toLocaleString()} บาท\n💰สรุป -> กำไร ${profitPercentage}%`;
+
+    const encodedMessage = encodeURIComponent(message);
+    await lineNotify(encodedMessage);
 
     if (!transaction) throw new Error("Failed to create new Tranasction");
     res.status(200).json(transaction);
@@ -150,8 +168,6 @@ const getFilteredDataByMonthYear = async (req, res, next) => {
   }
 };
 
-
-
 const monthMap = {
   January: 0,
   February: 1,
@@ -164,7 +180,7 @@ const monthMap = {
   September: 8,
   October: 9,
   November: 10,
-  December: 11
+  December: 11,
 };
 
 const getNumWeeksInMonth = (year, month) => {
@@ -233,7 +249,11 @@ const getFilteredDataByMonth = async (req, res, next) => {
   }
 };
 
-
-
-
-module.exports = { getAll, getFilterdData, getById, create, getFilteredDataByMonthYear, getFilteredDataByMonth };
+module.exports = {
+  getAll,
+  getFilterdData,
+  getById,
+  create,
+  getFilteredDataByMonthYear,
+  getFilteredDataByMonth,
+};

@@ -31,8 +31,6 @@ const PlannerHistoryPage = () => {
     }
   };
 
-  console.log(plannerHistorys);
-
   useEffect(() => {
     loadPlannerHistorys();
   }, []);

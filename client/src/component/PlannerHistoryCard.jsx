@@ -1,7 +1,10 @@
-import { Card, Typography } from "@mui/material";
+import { Card, IconButton, Stack, Typography } from "@mui/material";
+import LaunchIcon from '@mui/icons-material/Launch';
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const PlannerHistoryCard = ({ planner }) => {
+  const navigate = useNavigate();
   return (
     <>
       <Card
@@ -14,7 +17,12 @@ const PlannerHistoryCard = ({ planner }) => {
           pl: 3
         }}
       >
-        <Typography variant="h4">{planner.name}</Typography>
+        <Stack direction={'row'}>
+          <Typography variant="h4">{planner.name}</Typography>
+          <IconButton onClick={() => navigate(`planner/completed/${planner._id}`)}>
+            <LaunchIcon />
+          </IconButton>
+        </Stack>
       </Card>
     </>
   );
