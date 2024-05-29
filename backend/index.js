@@ -13,7 +13,7 @@ const devOrigin = 'http://localhost:5173'
 const prodOrigin = [process.env.PROD_ORIGIN_1, process.env.PROD_ORIGIN_2];
 
 const corsOptions = {
-    origin: prodOrigin,
+    origin: devOrigin,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }
