@@ -200,15 +200,12 @@ const PlannerPage = () => {
   };
 
   const calculateTotalMargin = async() => {
-    if(order.length <= 0) return;
-
     var sum = 0;
     for (let i = 0; i < order.length; i++) {
       sum += order[i].product_id.margin * order[i].amount;     
     }
 
     setTotalMargin(sum);
-    console.log(sum);
   }
   
   useEffect(() => {
@@ -301,7 +298,7 @@ const PlannerPage = () => {
           >
             Home Page
           </Button>
-          <Typography>
+          <Typography mt={3}>
             ต้นทุนของสินค้าทั้งหมด: {total_margin}
           </Typography>
         </Stack>
