@@ -28,6 +28,7 @@ const PlannerPage = () => {
   const [plannerData, setPlannerData] = useState(null);
   const [product, setProduct] = useState("");
   const [amount, setAmount] = useState("");
+  const [total_margin, setTotalMargin] = useState(0);
   const [total_sales, setTotalSales] = useState("");
   const [other_expenses, setOtherExpenses] = useState("");
 
@@ -198,13 +199,24 @@ const PlannerPage = () => {
     }
   };
 
+  const calculateTotalMargin = async() => {
+    var sum = 0;
+    for (let i = 0; i < order.length; i++) {
+      sum += order[i].product_id.margin * order[i].amount;     
+    }
+
+    setTotalMargin(sum);
+  }
+  
   useEffect(() => {
     fetchPlannerData();
     fetchOrderData();
     fetchProductData();
   }, []);
 
-  console.log(product);
+  useEffect(() => {
+    calculateTotalMargin();
+  }, [order])
 
   return (
     <>
@@ -286,6 +298,9 @@ const PlannerPage = () => {
           >
             Home Page
           </Button>
+          <Typography mt={3}>
+            ต้นทุนของสินค้าทั้งหมด: {total_margin}
+          </Typography>
         </Stack>
       </Stack>
     </>
